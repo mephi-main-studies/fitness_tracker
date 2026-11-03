@@ -34,20 +34,22 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 	stepsStr := parts[0]
 	durStr := parts[1]
 
-	// Строгие требования из тестов: без ведущих/замыкающих пробелов
-	if strings.TrimSpace(stepsStr) != stepsStr || strings.TrimSpace(durStr) != durStr || stepsStr == "" || durStr == "" {
-		return ErrInvalidInputFormat
-	}
 
 	// steps: целое > 0, допускается ведущий '+'
 	steps, err := strconv.Atoi(stepsStr)
-	if err != nil || steps <= 0 {
+	if err != nil {
+		return ErrInvalidStepsValue
+	}
+	if steps <= 0 {
 		return ErrInvalidStepsValue
 	}
 
 	// duration: корректный time.ParseDuration и > 0
 	dur, err := time.ParseDuration(durStr)
-	if err != nil || dur <= 0 {
+	if err != nil {
+		return ErrInvalidDurationValue
+	}
+	if dur <= 0 {
 		return ErrInvalidDurationValue
 	}
 

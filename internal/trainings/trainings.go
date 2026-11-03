@@ -33,19 +33,25 @@ func (t *Training) Parse(datastring string) (err error) {
 		return ErrInvalidInputFormat
 	}
 
-	stepsStr := strings.TrimSpace(parts[0])
+	stepsStr := parts[0]
 	typeStr := strings.TrimSpace(parts[1])
-	durStr := strings.TrimSpace(parts[2])
+	durStr := parts[2]
 
 	// steps: положительное целое число
 	steps, err := strconv.Atoi(stepsStr)
-	if err != nil || steps <= 0 {
+	if err != nil {
+		return ErrInvalidStepsValue
+	}
+	if steps <= 0 {
 		return ErrInvalidStepsValue
 	}
 
 	// duration: положительная продолжительность
 	dur, err := time.ParseDuration(durStr)
-	if err != nil || dur <= 0 {
+	if err != nil {
+		return ErrInvalidDurationValue
+	}
+	if dur <= 0 {
 		return ErrInvalidDurationValue
 	}
 
